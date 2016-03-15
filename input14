@@ -1,0 +1,47 @@
+window
+preference
+general(expand)
+last option workspace double click
+refresh using pullhooks
+
+
+
+<script>
+$(document).ready(function(){
+var count = <s:property value="itemlist.size()"/>";
+console.log(count);
+if(count < 6){
+conosle.log("msdsd");
+$('#hide').hide(); 
+}
+else{
+var i = <s:property value="itemlist.get(itemlist.size()-1).getItem_surrogatekey()"/>;
+    $(document).on('click','.loadmore',function(){
+$.ajax({
+    type : "GET",
+    url  :  "<s:url action='subcatitemaction'/>",
+    data : {'last_itemsurrogate_key' : i,
+    'subcatid':<s:property value="subcatid"/>
+    },
+    success : function(result){
+    console.log('<s:property value="itemlist.get(0).getItem_surrogatekey()"/>');
+        if (result != null && result.length > 0){
+        i = <s:property value="itemlist.get(itemlist.size()-1).getItem_surrogatekey()"/>;
+          $(".data").append(result);
+      console.log("mm here");
+        }
+        else
+        alert("No values found..!!");
+      },
+      error : function(xhr, errmsg) {alert("No values found..!!");}
+  });    
+    });}
+});
+</script>
+
+
+
+
+
+
+SELECT catname, subcatname FROM item117, category, subcategory where subcatid=surrogatesubcatid and parentcategory= surrogatecatid and itemsurrogatekey=?"
